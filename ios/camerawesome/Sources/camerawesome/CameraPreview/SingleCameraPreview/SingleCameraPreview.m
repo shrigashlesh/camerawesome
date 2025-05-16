@@ -201,7 +201,7 @@
       }
   } else if (_imageStreamController.streamImages) {
       // If only streaming (not recording), force 720p for potential stability (based on commit history)
-      targetSize = CGSizeMake(720, 1280);
+      targetSize = CGSizeMake(1080, 1920);
   } else if (CGSizeEqualToSize(currentPreviewSize, CGSizeZero)) {
       // If neither recording nor streaming, and no size provided, use best quality
       targetSize = CGSizeZero;
