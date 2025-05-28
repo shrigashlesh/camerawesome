@@ -155,15 +155,13 @@ class PreviewFitWidget extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: SizedBox(
-        width: maxSize.width,
-        height: maxSize.height,
+        width: constraints.maxWidth,
+        height: constraints.maxHeight,
         child: InteractiveViewer(
-          // key: previewWidgetKey,
           transformationController: transformController,
           scaleEnabled: false,
           constrained: false,
           panEnabled: false,
-          alignment: FractionalOffset.topLeft,
           clipBehavior: Clip.antiAlias,
           child: Align(
             alignment: Alignment.topLeft,
@@ -231,6 +229,8 @@ class PreviewSizeCalculator {
     final nativeHeightProjection = constraints.maxHeight * 1 / zoom;
     final hDiff = nativePreviewSize.height - nativeHeightProjection;
 
+    maxSize = Size(constraints.maxWidth, constraints.maxHeight);
+    _offset = Offset(0, constraints.maxHeight - maxSize.height);
     switch (previewFit) {
       case CameraPreviewFit.fitWidth:
         maxSize = Size(constraints.maxWidth, nativePreviewSize.height * zoom);
@@ -246,15 +246,12 @@ class PreviewSizeCalculator {
         if (constraints.maxWidth / constraints.maxHeight >
             previewSize.width / previewSize.height) {
           _offset = Offset((hDiff * zoom) * 2, 0);
-          // _offset = Offset(0, constraints.maxHeight - maxSize.height);
         } else {
           _offset = Offset(0, (wDiff * zoom));
-          // _offset = Offset(constraints.maxWidth - maxSize.width, 0);
         }
         break;
       case CameraPreviewFit.contain:
-        maxSize = Size(
-            nativePreviewSize.width * zoom, nativePreviewSize.height * zoom);
+        maxSize = Size(constraints.maxWidth, constraints.maxHeight);
         _offset = Offset(
           constraints.maxWidth - maxSize.width,
           constraints.maxHeight - maxSize.height,
